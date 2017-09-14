@@ -1,0 +1,17 @@
+<h1> gallery </h1>
+
+<form name="form_uploadImageToGallery" enctype= "multipart/form-data" method="post">
+    <br>
+    <label id="label_file">File:</label><br />
+    <input type="file" required accept='image/*' name="field_photo">
+    <input type="submit" value="Submit">
+</form>
+
+<p> hello </p>
+
+{{#each imageIdArray }}
+    <p> image here</p>
+    <img src="/images/{{this.ImageId}}" style="width:150px; height:150px">
+{{/each}}
+
+<p> hello </p>

@@ -1,0 +1,98 @@
+body {
+    background-image:url('/images/background.png');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-inverse .navbar-header .navbar-brand {
+    color: #E3CC41;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #E3CC41;
+}
+
+.thumbnail {
+    background-color: black;
+    border-style: none;
+}
+
+.thumbnail .caption {
+    color: #E3CC41;
+    font-size: 12px;
+    text-align: center;
+    padding: 0px;
+}
+
+.topGameImages {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E3CC41;
+
+}
+
+img {
+    max-width: none;
+}
+
+/*body, html, .container-fluid {*/
+    /*height: 100%;*/
+/*}*/
+
+
+
+
+
+/*html {*/
+    /*height: 100%;*/
+    /*min-width: 960px;*/
+/*}*/
+
+/*body {*/
+    /*min-height: 100%;*/
+    /*min-width: 960px;*/
+    /*background-color: #E3CC41;*/
+/*}*/
+
+/*.left {*/
+    /*float: left;*/
+/*}*/
+
+/*.right {*/
+    /*float: right;*/
+/*}*/
+
+/*!*------------ Main Container ------------*!*/
+/*.mainContainer {*/
+    /*width: 960px;*/
+    /*height: 600px;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translateX(-50%) translateY(-50%);*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+    /*border-color: black;*/
+/*}*/
+
+/*!*--------------- Top Container ------------*!*/
+/*.topContainer {*/
+    /*height: 30px;*/
+    /*width: 960px;*/
+    /*margin: 0px auto;*/
+    /*background-color: black;*/
+    /*display: table-cell;*/
+    /*vertical-align:bottom;*/
+/*}*/
+
+/*#topContainer_header {*/
+    /*font-family: Arial;*/
+    /*font-size: 30px;*/
+    /*color: #E3CC41;*/
+    /*padding-left: 2px;*/
+/*}*/

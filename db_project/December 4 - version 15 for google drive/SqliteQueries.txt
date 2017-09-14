@@ -1,0 +1,49 @@
+SELECT UserId, Username,
+(CASE WHEN UserId IN (SELECT UserID
+                      FROM Friend_request JOIN USER
+                      ON UserID = Friend_request.recipient
+                      WHERE Friend_request.sender = 'daniel')
+      THEN 1 ELSE 0 end) as requestPending
+FROM User
+WHERE UserId <> 'daniel'
+AND UserId NOT IN (SELECT Friends_with.user1
+		   FROM Friends_with
+		   WHERE user2 = 'daniel'
+		   UNION
+		   SELECT Friends_with.user2
+		   FROM Friends_with
+		   WHERE user1 = 'daniel');
+
+/*** use this one ***/
+SELECT UserId, Username,
+(CASE WHEN UserId IN (SELECT UserID
+                      FROM Friend_request JOIN USER
+                      ON UserID = Friend_request.recipient
+                      WHERE Friend_request.sender = 'patrick')
+      THEN 1 ELSE 0 end) as outboundRequestPending,
+(CASE WHEN UserID IN (SELECT UserID
+                      FROM Friend_request JOIN USER
+                      ON UserID = Friend_request.sender
+                      WHERE Friend_request.recipient = 'patrick')
+      THEN 1 ELSE 0 end) as inboundRequestPending
+FROM User
+WHERE UserId <> 'patrick'
+AND UserId NOT IN (SELECT Friends_with.user1
+		   FROM Friends_with
+		   WHERE user2 = 'patrick'
+		   UNION
+		   SELECT Friends_with.user2
+		   FROM Friends_with
+		   WHERE user1 = 'patrick');
+
+/* query to populate search games table */
+SELECT GameId, Title,
+(CASE WHEN GameId IN (SELECT GameId
+                      FROM Game
+                      NATURAL JOIN Plays
+                      WHERE UserId = 'daniel')
+     THEN 1 ELSE 0 END) as alreadyPlays
+FROM Game ORDER BY Title ASC;
+
+
+

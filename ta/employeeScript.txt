@@ -1,0 +1,24 @@
+CREATE TABLE employee (
+	fname VARCHAR(20),
+	m_init VARCHAR(1),
+	lname VARCHAR(20),
+	ssn INT primary key,
+	dob DATE,
+	address VARCHAR(50),
+	sex VARCHAR(1),
+	salary INT,
+	super_ssn INT, 
+	Dno INT
+);
+
+CREATE TABLE dependent (
+	essn INT,
+	dependent_name VARCHAR(20),
+	sex VARCHAR(1),
+	dob DATE,
+	relationship VARCHAR(1)
+);
+
+INSERT INTO employee VALUES ('John', 'B', 'Smith', 123456789, '1965-01-09', '731 Something drive', 'M', 30000, 333445555, 5);
+INSERT INTO employee VALUES ('Franklin', 'T', 'Wong', 333445555, '1955-12-08', '731 Something drive', 'M', 40000, 888665555, 5);
+INSERT INTO employee VALUES ('Alicia', 'J', 'Zelaya', 999887777, '1968-01-19', '731 Something drive', 'F', 25000, 987654321, 4);

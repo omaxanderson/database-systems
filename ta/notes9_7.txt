@@ -1,0 +1,5 @@
+SELECT pname, pnumber, min(salary) AS min_sal, count(*) 
+FROM employee, project, works_on
+WHERE ssn=essn AND pno=pnumber 
+GROUP BY pname, pnumber
+HAVING min(sal) >= 30000;

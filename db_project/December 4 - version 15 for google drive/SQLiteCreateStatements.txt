@@ -1,0 +1,215 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE User (
+	UserId   VARCHAR(30) NOT NULL,
+	Password VARCHAR(30) NOT NULL,
+	Username VARCHAR(30) NOT NULL,
+	Email    VARCHAR(50) NOT NULL,
+	PRIMARY KEY(UserId)
+);
+
+CREATE TABLE Game (
+	GameId INTEGER      PRIMARY KEY,
+	Title  VARCHAR(100) NOT NULL,
+	CHECK(GameId >= 0)
+);
+
+CREATE TABLE Message (
+	MessageId INTEGER     PRIMARY KEY,
+	Sender    VARCHAR(30) NOT NULL,
+	Recipient VARCHAR(30) NOT NULL,
+	Timestamp DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	Contents  TEXT        NOT NULL,
+	FOREIGN KEY(Sender) REFERENCES User(UserId),
+	FOREIGN KEY(Recipient) REFERENCES User(UserId),
+	CHECK(MessageId >= 0)
+);
+
+CREATE TABLE Post (
+	PostId   INTEGER      PRIMARY KEY,
+	UserId   VARCHAR(30)  NOT NULL,
+	Timestamp DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	Contents TEXT         NOT NULL,
+	FOREIGN KEY(UserId) REFERENCES User(UserId),
+	CHECK(PostID >= 0)
+);
+
+CREATE TABLE Friend_request (
+	Sender    VARCHAR(30) NOT NULL,
+	Recipient VARCHAR(30) NOT NULL,
+	Contents  TEXT        NOT NULL,
+	PRIMARY KEY(Sender, Recipient),
+	FOREIGN KEY(Sender) REFERENCES User(UserId),
+	FOREIGN KEY(Recipient) REFERENCES User(UserId)
+);
+
+
+CREATE TABLE Friends_with (
+	User1 VARCHAR(30) NOT NULL,
+	User2 VARCHAR(30) NOT NULL,
+	PRIMARY KEY(User1, User2),
+	FOREIGN KEY(User1) REFERENCES User(UserId),
+	FOREIGN KEY(User2) REFERENCES User(UserId)
+);
+
+CREATE TABLE Plays (
+	UserId VARCHAR(30) NOT NULL,
+	GameId INT         NOT NULL,
+	PRIMARY KEY(UserId, GameId),
+	FOREIGN KEY(UserId) REFERENCES User(UserId),
+	FOREIGN KEY(GameId) REFERENCES Game(GameId)
+);
+
+CREATE TABLE Picture (
+	UserId  VARCHAR (30)  NOT NULL,
+	ImageId VARCHAR (500) NOT NULL UNIQUE,
+	PRIMARY KEY(UserId, ImageId),
+	FOREIGN KEY(UserId) REFERENCES User(UserId)
+);
+
+ALTER TABLE User ADD COLUMN ProfilePicId VARCHAR(500) REFERENCES Picture(ImageId);
+
+/**------------------------------------------------------------**/
+/**----------- USER TABLE INSERT STATEMENTS--------------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO User (UserId, Password, Username, Email)
+VALUES           ('patrick', 'password', 'Patrick', 'daypj@miamioh.edu'),
+                 ('jared',   'password', 'Jared',   'wechsljm@miamioh.edu'),
+                 ('daniel',  'password', 'Daniel',  'goetscda@miamioh.edu'),
+                 ('nhat',    'password', 'Nhat',    'nguyennm@miamioh.edu'),
+                 ('max',     'password', 'Max',     'anderso2@miamioh.edu');
+
+INSERT INTO Game (Title) VALUES ('Team Fortress 2');
+INSERT INTO Game (Title) VALUES ('Dota 2');
+INSERT INTO Game (Title) VALUES ('Counter-Strike: Global Offensive');
+INSERT INTO Game (Title) VALUES ('Left 4 Dead 2');
+INSERT INTO Game (Title) VALUES ('Half-Life 2');
+INSERT INTO Game (Title) VALUES ('Portal 2');
+INSERT INTO Game (Title) VALUES ('Counter-Strike: Source');
+INSERT INTO Game (Title) VALUES ('Half-Life');
+INSERT INTO Game (Title) VALUES ('Portal');
+INSERT INTO Game (Title) VALUES ('Left 4 Dead');
+INSERT INTO Game (Title) VALUES ('Overwatch');
+INSERT INTO Game (Title) VALUES ('Minecraft');
+INSERT INTO Game (Title) VALUES ('Grand Theft Auto V');
+INSERT INTO Game (Title) VALUES ('The Witcher 3: Wild Hunt');
+INSERT INTO Game (Title) VALUES ('The Elder Scrolls V: Skyrim');
+INSERT INTO Game (Title) VALUES ('Dishonored 2');
+INSERT INTO Game (Title) VALUES ('Deus Ex');
+INSERT INTO Game (Title) VALUES ('Dark Souls');
+INSERT INTO Game (Title) VALUES ('Dark Souls II');
+INSERT INTO Game (Title) VALUES ('Dark Souls III');
+INSERT INTO Game (Title) VALUES ('Limbo');
+INSERT INTO Game (Title) VALUES ('Titanfall 2');
+INSERT INTO Game (Title) VALUES ('Hearthstone: Heroes of Warcraft');
+INSERT INTO Game (Title) VALUES ('Plants vs. Zombies');
+INSERT INTO Game (Title) VALUES ('World of Warcraft');
+INSERT INTO Game (Title) VALUES ('DOOM');
+INSERT INTO Game (Title) VALUES ('Rise of the Tomb Raider');
+INSERT INTO Game (Title) VALUES ('Battlefield 1');
+INSERT INTO Game (Title) VALUES ('Fallout 4');
+INSERT INTO Game (Title) VALUES ('Destiny');
+INSERT INTO Game (Title) VALUES ('NBA 2K17');
+INSERT INTO Game (Title) VALUES ('Deus Ex: Mankind Divided');
+INSERT INTO Game (Title) VALUES ('Call of Duty 4: Modern Warfare');
+INSERT INTO Game (Title) VALUES ('FIFA 17');
+INSERT INTO Game (Title) VALUES ('Metal Gear Solid V: The Phantom Pain');
+INSERT INTO Game (Title) VALUES ('Rocket League');
+INSERT INTO Game (Title) VALUES ('The Witness');
+INSERT INTO Game (Title) VALUES ('Hitman');
+INSERT INTO Game (Title) VALUES ('BioShock');
+INSERT INTO Game (Title) VALUES ('Forza Horizon 3');
+INSERT INTO Game (Title) VALUES ('XCOM 2');
+INSERT INTO Game (Title) VALUES ('Watch Dogs');
+INSERT INTO Game (Title) VALUES ('Pro Evolution Soccer 2017');
+INSERT INTO Game (Title) VALUES ('Watch Dogs 2');
+INSERT INTO Game (Title) VALUES ('Call of Duty: Infinite Warfare');
+INSERT INTO Game (Title) VALUES ('Civilization VI');
+INSERT INTO Game (Title) VALUES ('StarCraft II: Wings of Liberty');
+INSERT INTO Game (Title) VALUES ('League of Legends');
+INSERT INTO Game (Title) VALUES ('Smite');
+INSERT INTO Game (Title) VALUES ('Star Wars: Battlefront');
+
+/**------------------------------------------------------------**/
+/**------------- MESSAGE TABLE INSERT STATEMENTS---------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO Message (MessageId, Sender, Recipient, Contents) VALUES (1, 'max',     'nhat',   'Hey Nhat, do you want to play games this weekend?');
+INSERT INTO Message (MessageId, Sender, Recipient, Contents) VALUES (2, 'jared',   'daniel', 'Hey, how''s life?');
+INSERT INTO Message (MessageId, Sender, Recipient, Contents) VALUES (3, 'nhat',    'max',    'Sorry, I''ll be out of town.');
+INSERT INTO Message (MessageId, Sender, Recipient, Contents) VALUES (4, 'patrick', 'nhat',   'Just bought a new game, you should try it out.');
+
+/**------------------------------------------------------------**/
+/**--------------- POST TABLE INSERT STATEMENTS----------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO Post (PostId, UserId, Contents) VALUES (1, 'nhat',   'Going out of town this weekend.');
+INSERT INTO Post (PostId, UserId, Contents) VALUES (2, 'max',    'Has anyone tried the new Battlefield game?');
+INSERT INTO Post (PostId, UserId, Contents) VALUES (3, 'max',    'So much homework.  No games tonight.');
+INSERT INTO Post (PostId, UserId, Contents) VALUES (4, 'daniel', 'I wish I had time to sleep more.');
+
+/**------------------------------------------------------------**/
+/**--------- FRIEND_REQUEST TABLE INSERT STATEMENTS------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO Friend_request (Sender, Recipient, Contents) Values ('daniel', 'patrick', 'Hey, add me to your friends.');
+INSERT INTO Friend_request (Sender, Recipient, Contents) Values ('jared',   'max', 'Add me!');
+INSERT INTO Friend_request (Sender, Recipient, Contents) Values ('patrick',  'max', 'Add me to your friends!');
+
+/**------------------------------------------------------------**/
+/**------------- FRIENDS_WITH TABLE INSERT STATEMENTS----------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO Friends_with (User1, User2) VALUES ('nhat',    'max');
+INSERT INTO Friends_with (User1, User2) VALUES ('patrick', 'nhat');
+INSERT INTO Friends_with (User1, User2) VALUES ('daniel',  'jared');
+INSERT INTO Friends_with (User1, User2) VALUES ('daniel',  'max');
+INSERT INTO Friends_with (User1, User2) VALUES ('jared',   'patrick');
+INSERT INTO Friends_with (User1, User2) VALUES ('jared',   'nhat');
+
+/**------------------------------------------------------------**/
+/**------------- PLAYS TABLE INSERT STATEMENTS-----------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     2);
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     4);
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     6);
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     8);
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     10);
+INSERT INTO Plays(UserId, GameId) VALUES ('nhat',     12);
+INSERT INTO Plays(UserId, GameId) VALUES ('max',      1);
+INSERT INTO Plays(UserId, GameId) VALUES ('max',      3);
+INSERT INTO Plays(UserId, GameId) VALUES ('max',      5);
+INSERT INTO Plays(UserId, GameId) VALUES ('max',      7);
+INSERT INTO Plays(UserId, GameId) VALUES ('max',      9);
+INSERT INTO Plays(UserId, GameId) VALUES ('daniel',   1);
+INSERT INTO Plays(UserId, GameId) VALUES ('daniel',   2);
+INSERT INTO Plays(UserId, GameId) VALUES ('daniel',   3);
+INSERT INTO Plays(UserId, GameId) VALUES ('daniel',   4);
+INSERT INTO Plays(UserId, GameId) VALUES ('daniel',   5);
+INSERT INTO Plays(UserId, GameId) VALUES ('jared',    6);
+INSERT INTO Plays(UserId, GameId) VALUES ('jared',    7);
+INSERT INTO Plays(UserId, GameId) VALUES ('jared',    8);
+INSERT INTO Plays(UserId, GameId) VALUES ('jared',    9);
+INSERT INTO Plays(UserId, GameId) VALUES ('jared',    10);
+INSERT INTO Plays(UserId, GameId) VALUES ('patrick',  1);
+INSERT INTO Plays(UserId, GameId) VALUES ('patrick',  2);
+INSERT INTO Plays(UserId, GameId) VALUES ('patrick',  5);
+INSERT INTO Plays(UserId, GameId) VALUES ('patrick',  7);
+INSERT INTO Plays(UserId, GameId) VALUES ('patrick',  11);
+
+/**------------------------------------------------------------**/
+/**------------- PICTURE TABLE INSERT STATEMENTS---------------**/
+/**------------------------------------------------------------**/
+
+
+INSERT INTO Picture (UserId, ImageId) VALUES ('daniel',  1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('max',     (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('patrick', (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('nhat',    (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('jared',   (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('jared',   (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('jared',   (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('max',     (SELECT max(ImageId) FROM Picture) + 1);
+INSERT INTO Picture (UserId, ImageId) VALUES ('patrick', (SELECT max(ImageId) FROM Picture) + 1);

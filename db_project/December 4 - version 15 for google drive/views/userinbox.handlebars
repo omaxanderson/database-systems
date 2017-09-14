@@ -1,0 +1,49 @@
+<!-- we need some way to select the recipient of the message, whether we want to do a search function or a dynamically created drop down --> 
+
+<div class="inbox-body" style="margin-top: 100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-md-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2" style="text-align: center">
+                <!-- friend search here -->
+                <form name="message_form"><br>
+                    <fieldset>
+                        
+                        <textarea placeholder="Write message..." form="message_form" style="width:75%; height=50px; border-radius: 5px; border: none; padding: 10px; resize: none;"></textarea><br>
+                        
+                        <input type="submit" value="Send Message" style="border-radius: 5px; background-color: white; border: none">
+                        <!-- this button could also use a hover effect, maybe just a subtle color change -->
+                    </fieldset>
+
+                </form>
+                
+                
+            </div>
+        
+        </div>
+        
+        
+        
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-md-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2" style="text-align: center">
+                <div style="background-color: #a1a1a1; border-radius: 5px; box-shadow: 5px 5px 5px; margin-top: 15px">
+                <h1 style="padding-top: 12px"> Messages </h1>
+                <h2> You have {{ numberOfMessages }} messages</h2>
+                <!-- sort of petty and completely unnecessary but if you want to make it so that it says "You have 1 message" instead of "messages", that looks a little better -->
+                <table class="table table-hover text-centered" style="text-align: left">
+                    <!-- dont think we need this table header-->
+                    <!-- <th>Messages</th> -->
+                    
+                    <!-- also I dont think we need anything to happen on hover with these messages, that just makes it quite a bit harder to read. -->
+                    {{#each messagesArray }}
+                    <tr><td>
+                        <p style="margin-bottom: 0px">From: {{ this.Username }}</p> 
+                        <p style="font-size: 15px; color: #a1a1a1"> {{ this.Timestamp }} </p> <p>{{ this.Contents }} </p>
+                        </td></tr>
+                    {{/each}}
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

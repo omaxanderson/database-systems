@@ -1,0 +1,100 @@
+/* 1. Find students (sid and name) that took the course 'CS201' in Fall 2008. */
+SELECT sid, name 
+FROM Student NATURAL JOIN Took
+NATURAL JOIN Section
+NATURAL JOIN Course
+WHERE crsid='CS201'
+AND semester='F2008';
+
+/* 2. Find students (sid and name) that did not take 'Calculus'. */
+SELECT sid 
+FROM Student 
+EXCEPT 
+SELECT sid
+FROM Student NATURAL JOIN Took
+NATURAL JOIN Section
+NATURAL JOIN Course
+WHERE cname='Calculus';
+
+/* 3. For each section, find the highest score. Print the secid and highest
+      score. */
+		SELECT secid, MAX(score)
+      	FROM Section NATURAL JOIN Took
+      	GROUP BY secid
+      	HAVING MAX(score);
+      
+
+/* 4. For each section, find the student or students with the lowest score.
+      Report ties. Print the secid, sid, name, and score. */
+SELECT secid, sid, name, score
+FROM Student NATURAL JOIN Took
+NATURAL JOIN Section
+NATURAL JOIN Course
+GROUP BY secid
+HAVING score=MIN(score);
+
+/* 5. For each course, find the highest score. Print the crsid and highest 
+      score. */
+      SELECT crsid, score
+      FROM Course NATURAL JOIN Section
+      NATURAL JOIN Took
+      GROUP BY crsid
+      HAVING MAX(score);
+
+/* 6. Find students (sid, name) that have taken exactly one course in the CompSci 
+      department. */
+      SELECT *, COUNT(dept)
+      FROM Student NATURAL JOIN Took
+      NATURAL JOIN Section
+	  NATURAL JOIN Course
+	  GROUP BY sid;
+	  
+	  
+
+/* 7. Create a view V1 that displays the average grades of domestic students that
+      are athletes. Print sid, name, and average grade. */
+      CREATE VIEW V1 AS
+      SELECT sid, name, AVG(score)
+      FROM Student NATURAL JOIN Athlete
+      NATURAL JOIN Took
+	  WHERE isInternational=0
+	  GROUP BY sid
+	  HAVING COUNT(sport) > 0;
+	  
+/* 8. Create a view V2 that displays the average grade for each section, ordered 
+      by the course id (crsid) of that section. Print secid, crsid, and average 
+      grade. */
+      CREATE VIEW V2 AS
+      SELECT secid, crsid, AVG(score)
+      FROM Section NATURAL JOIN Took
+      NATURAL JOIN Course
+      GROUP BY secid
+      ORDER BY crsid;
+
+/* 9. Create a view V3 that displays all sections with at least 2 students 
+      with a score of 80 or higher. Print the secid and number of students
+      with a score of 80 or higher. */
+      DROP VIEW IF EXISTS V3;
+      CREATE VIEW V3 AS
+      SELECT secid, COUNT(sid) AS Num_students
+      FROM Section NATURAL JOIN Took
+      GROUP BY secid
+      HAVING AVG(score) >= 80;
+
+/* 10. Create a trigger T that takes care of cases when a score not ranging 
+       between 0 and 100 (inclusive) is inserted into the TOOK table. Write a 
+       comment to explain what your trigger does when such an invalid value is 
+       entered. */
+       
+       DROP TRIGGER IF EXISTS T;
+       CREATE TRIGGER T
+       AFTER INSERT ON Took
+       BEGIN
+        UPDATE Took
+       	SET score = NULL
+       	WHERE score < 0 OR score > 100;
+       END;
+       
+       This trigger will simply set the score to NULL. The main problem with this is that 
+       the user might not know that the score was not entered.
+

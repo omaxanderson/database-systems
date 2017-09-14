@@ -1,0 +1,14 @@
+<h1> edit profile</h1>
+<form name="form_updateUsername" method="post" action="/editUsername">
+    <input type="text" name="field_updateUsername" value = {{ currentUsername }}>
+    <input type="submit" value="Update">
+</form>
+<form name="form_uploadProfilePic" enctype= "multipart/form-data" method="post" action="/editProfilePic">
+    <img src="{{currentProfilePic}}" style="width:150px; height:150px">
+<fieldset>
+    <br>
+    <label id="label_file">File:</label><br />
+    <input type="file" required accept='image/*' name="field_photo">
+    <input type="submit" value="Submit">
+    </fieldset>
+</form>

@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12"></div>
+        <br/><br/>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <table>
+                {{#each allGamesArray}}
+                    <tr>
+                        <td class="col-lg-1 col-md-1 col-sm-1"></td>
+                        <td class="col-lg-2 col-md-2 col-sm-2" align="left"><img style="border:1px solid yellow" height="150" width="150" src="/gameIcons/{{this.GameImageFileName}}"></td>
+                        <td class="col-lg-6 col-md-4 col-sm-4">{{this.Title }}</td>
+                        <td class="col-lg-2 col-md-2 col-sm-2"> {{ this.NumPlayers }} players</td>
+                        <td class="col-lg-1 col-md-1 col-sm-1"></td>
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>

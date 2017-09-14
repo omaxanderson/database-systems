@@ -1,0 +1,98 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE User (
+	UserId   VARCHAR(30) NOT NULL,
+	Password VARCHAR(30) NOT NULL,
+	Username VARCHAR(30) NOT NULL,
+	Email    VARCHAR(50) NOT NULL,
+	PRIMARY KEY(UserId)
+);
+
+CREATE TABLE Game (
+	GameId            INTEGER      PRIMARY KEY,
+	Title             VARCHAR(100) NOT NULL,
+        GameImageFileName VARCHAR(100) NOT NULL UNIQUE,
+	CHECK(GameId >= 0)
+);
+
+CREATE TABLE Message (
+	MessageId INTEGER     PRIMARY KEY,
+	Sender    VARCHAR(30) NOT NULL,
+	Recipient VARCHAR(30) NOT NULL,
+	Timestamp DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	Contents  TEXT        NOT NULL,
+	FOREIGN KEY(Sender) REFERENCES User(UserId),
+	FOREIGN KEY(Recipient) REFERENCES User(UserId),
+	CHECK(MessageId >= 0)
+);
+
+CREATE TABLE Post (
+	PostId   INTEGER      PRIMARY KEY,
+	UserId   VARCHAR(30)  NOT NULL,
+	Timestamp DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	Contents TEXT         NOT NULL,
+	FOREIGN KEY(UserId) REFERENCES User(UserId),
+	CHECK(PostID >= 0)
+);
+
+CREATE TABLE Friend_request (
+	Sender    VARCHAR(30) NOT NULL,
+	Recipient VARCHAR(30) NOT NULL,
+	PRIMARY KEY(Sender, Recipient),
+	FOREIGN KEY(Sender) REFERENCES User(UserId),
+	FOREIGN KEY(Recipient) REFERENCES User(UserId)
+);
+
+
+CREATE TABLE Friends_with (
+	User1 VARCHAR(30) NOT NULL,
+	User2 VARCHAR(30) NOT NULL,
+	PRIMARY KEY(User1, User2),
+	FOREIGN KEY(User1) REFERENCES User(UserId),
+	FOREIGN KEY(User2) REFERENCES User(UserId)
+);
+
+CREATE TABLE Plays (
+	UserId VARCHAR(30) NOT NULL,
+	GameId INT         NOT NULL,
+	PRIMARY KEY(UserId, GameId),
+	FOREIGN KEY(UserId) REFERENCES User(UserId),
+	FOREIGN KEY(GameId) REFERENCES Game(GameId)
+);
+
+CREATE TABLE Picture (
+	UserId  VARCHAR (30)  NOT NULL,
+	ImageId VARCHAR (500) NOT NULL UNIQUE,
+	PRIMARY KEY(UserId, ImageId),
+	FOREIGN KEY(UserId) REFERENCES User(UserId)
+);
+
+ALTER TABLE User ADD COLUMN ProfilePicId VARCHAR(500) REFERENCES Picture(ImageId);
+
+/**------------------------------------------------------------**/
+/**----------- USER TABLE INSERT STATEMENTS--------------------**/
+/**------------------------------------------------------------**/
+
+INSERT INTO User (UserId, Password, Username, Email)
+VALUES           ('patrick', 'password', 'Patrick', 'daypj@miamioh.edu'),
+                 ('jared',   'password', 'Jared',   'wechsljm@miamioh.edu'),
+                 ('daniel',  'password', 'Daniel',  'goetscda@miamioh.edu'),
+                 ('nhat',    'password', 'Nhat',    'nguyennm@miamioh.edu'),
+                 ('max',     'password', 'Max',     'anderso2@miamioh.edu');
+
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Battlefield 1', 'battlefield1.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'BioShock', 'bioshock.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Counter-Strike: Global Offensive', 'counterstrikeglobaloffensive.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Dota 2', 'dota2.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'FIFA 17', 'fifa17.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Half-Life 2', 'halflife2.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'League of Legends', 'leagueoflegends.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Limbo', 'limbo.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Minecraft', 'minecraft.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Overwatch', 'overwatch.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Portal 2', 'portal2.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Rocket League', 'rocketleague.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Team Fortress 2', 'teamfortress2.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'Titanfall 2', 'titanfall2.png');
+INSERT INTO Game (GameId, Title, GameImageFileName) VALUES (null, 'World of Warcraft', 'worldofwarcraft.png');
+

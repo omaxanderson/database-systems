@@ -1,0 +1,31 @@
+<h1> user home page</h1>
+<img src="{{profilePicReference}}" style="width:150px; height:150px;"/>
+<table>
+    <th> Posts </th>
+    {{#each postsArray }}
+        <tr><td> Time: {{ this.Timestamp }} content: {{ this.Contents }} </td></tr>
+    {{/each}}
+</table>
+<table>
+    <th> Friends </th>
+    {{#each friendsArray }}
+        <tr><td> UserId for href: {{ this.UserId }} username to display: {{ this.Username }} </td></tr>
+    {{/each}}
+</table>
+<table>
+    <th> Games </th>
+    {{#each gamesArray }}
+        <tr><td> Games user plays: {{ this.Title }} </td></tr>
+    {{/each}}
+</table>
+{{#if allowPost}}
+    <form name="form_addPost" method="post">
+        <br>
+        <fieldset>
+            <label id="label_Id"> Post:</label><br />
+            <textarea name="field_postContents" rows="10" cols="50" placeholder="Enter message here"/></textarea>
+            <br />
+            <input type="submit" value="Post" />
+        </fieldset>
+    </form>
+{{/if}}

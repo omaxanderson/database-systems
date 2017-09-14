@@ -1,0 +1,26 @@
+body {
+    background-image:url('/images/background.png');
+    background-size: 5120px 2880px;
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+table {
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.75);
+
+}
+
+td {
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    border-color: yellow;
+    border-bottom-style: dotted;
+    bottom-border-width: 1px;
+}
+
+th {
+    font-size: 40px;
+}

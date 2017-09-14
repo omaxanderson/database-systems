@@ -1,0 +1,144 @@
+<label> {{ notificationLabel }} </label>
+
+<!-- this one looks really sparce when there's nothing to populate it with. Let me know if we want to make some adjustments like a box surrounding each element to make it look a little nicer when there's nothing in it. -->
+
+<div class="body_container" style="margin-top: 50px">
+<div class="container">
+    <div class="row" style="text-align: center">
+    <div class="col-md-3">
+    
+    <h1>Friend Requests</h1>
+    <table id="requestsAwaitingUserApproval">
+        {{#each requestsNeedingApprovalArray}}
+            <tr>
+                <td>{{this.UserId}} ({{this.Username}})</td>
+                <td>
+                    <form name="form_addFriendFromRequest" method="post" action="/acceptFriend">
+                        <input type="hidden" name="field_userIdOfNewFriend" value = {{this.UserId}}>
+                        <input type="submit" value="Accept" style="height:50px; width:100px; background-color: #4dff88; font-size:15px; border-radius: 5px; border: none; color: black">
+                    </form>
+                    
+                    <form name="form_declineFriend" method="post" action="/declineFriend">
+                    <input type="hidden" name="field_userIdOfDeclinedFriend" value = {{ this.UserId}}>
+                    <input type="submit" value="Decline" style="height:50px; width:100px; background-color: red; font-size:15px; border-radius: 5px; border: none; color: black">
+                </form>
+                </td>
+                
+            </tr>
+        {{/each}}
+        <!-- maybe want a "No Friend Requests" when requestsNeedingApprovalArray is empty    -->
+    </table>
+        
+        
+        <h1> Awaiting Response</h1>
+<table id="requestsAwaitingOthersApproval" style="float:none; margin-left: auto; margin-right: auto; ">
+    {{#each requestsAwaitingApprovalArray }}
+        <tr>
+            <td>{{this.UserId}} ({{this.Username}})</td>
+        </tr>
+    {{/each}}
+</table>
+        
+    </div>
+        <!-- for this section, I would say the on hover effects should be reserved for just the buttons, instead of the full table row. The only thing to click on is the buttons, so they should have the hover effect. --> 
+        
+        <div class="col-md-6" style="text-align: center;" >
+            <h1>Search For Friends</h1>
+            <input type="text" id="searchInput" placeholder="Search for friends" onkeyup="filterTableEntries()" style="border-radius: 5px; padding: 5px; border: none; width: 300px">
+            <table id="potentialFriendsTable" class="table table-hover text-centered">
+                
+            {{#each potentialFriendsArray }}
+                <tr style="display: none">
+                    <td> {{ this.UserId }} ({{ this.Username }}) </td>
+                        {{#if this.outboundRequestPending }}
+                            <td>
+                                <!-- ** need to disable button here since friend request already sent -->
+                                <form name="form_addFriend" method="post">
+                                    <input type="hidden" name="field_userIdOfNewFriend" value = {{ this.UserId }}>
+                                    <input type="submit" value="Request Sent" style="height:50px; width:auto; background-color: red; font-size:15px; border-radius: 5px; border: none; color: black">
+                                </form>
+                            </td>
+                        {{ else if this.inboundRequestPending}}
+                            <td>
+                                <!-- need to check inbox because request is there -->
+                                <form name="form_addFriend" method="post" action="/acceptFriend">
+                                    <input type="hidden" name="field_userIdOfNewFriend" value = {{ this.UserId}}>
+                                    <input type="submit" value="Accept" style="height:50px; width:auto; background-color: #4dff88; font-size:15px; border-radius: 5px; border: none; color: black">
+                                </form>
+                            </td>
+                            <td>
+                                <!-- need to check inbox because request is there -->
+                                <form name="form_declineFriend" method="post" action="/declineFriend">
+                                    <input type="hidden" name="field_userIdOfDeclinedFriend" value = {{ this.UserId}}>
+                                    <input type="submit" value="Decline" style="height:50px; width:auto; background-color: red; font-size:15px; border-radius: 5px; border: none; color: black">
+                                </form>
+                            </td>
+                        {{ else }}
+                            <td>
+                                 <form name="form_requestFriend" method="post" action="/requestFriend">
+                                    <input type="hidden" name="field_userIdOfPotentialFriend" value = {{ this.UserId}}>
+                                    <input type="submit" value="Send Request" style="height:50px; width:auto; background-color: #4dff88; font-size:15px; border-radius: 5px; border:none; color: black">
+                                </form>
+                            </td>
+                            <!-- NEED TO ADD ANOTHER BLANK COLUMN TO MAKE EVEN WITH PENDING REQUEST WHICH HAS 3 COLUMNS -->
+                            <!-- OR POSSIBLY DO A COLLUMN SPAN -->
+                        {{/if}}
+                </tr>
+
+            {{/each}}
+            </table>
+    </div>
+
+    <div class="col-md-3" >
+<h1> Friends </h1>
+<table id="currentFriends">
+    {{#each currentFriendsArray }}
+        <tr>
+            <td>{{this.UserId}} ({{this.Username}})</td>
+            <td>
+                <form name="form_addFriendFromRequest" method="post" action="/deleteFriend">
+                    <input type="hidden" name="field_userIdOfDeletedFriend" value = {{this.UserId}}>
+                    <input type="submit" value="Remove Friend" style="height:50px; width:auto; font-size: 13px; background-color: red; border:none; ">
+                </form>
+            </td>
+        </tr>
+
+    {{/each}}
+</table>
+    </div>
+</div>
+    <!--
+    <div class="row">
+    <div class="col-md-3" style="float:left; position: fixed">
+        <h1> Awaiting Response</h1>
+<table id="requestsAwaitingOthersApproval">
+    {{#each requestsAwaitingApprovalArray }}
+        <tr>
+            <td>{{this.UserId}} ({{this.Username}})</td>
+        </tr>
+    {{/each}}
+</table>
+        </div>
+    </div> -->
+</div>
+</div>
+
+
+<!-- Script adapted from http://www.w3schools.com/howto/howto_js_filter_table.asp -->
+<script>
+    function filterTableEntries() {
+        var currentInput = document.getElementById("searchInput");
+        var filterString = currentInput.value.toLowerCase();
+        var resultTable = document.getElementById("potentialFriendsTable");
+        var resultTableRows = resultTable.getElementsByTagName("tr");
+
+        for (i = 0; i < resultTableRows.length; i++) {
+            var cellData = resultTableRows[i].getElementsByTagName("td")[0];
+            if (filterString.length != 0 && cellData.innerHTML.toLowerCase().indexOf(filterString, 0) > -1) {
+                resultTableRows[i].style.display = "";
+            } else {
+                resultTableRows[i].style.display = "none";
+            }
+        }
+    }
+</script>

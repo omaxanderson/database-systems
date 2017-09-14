@@ -1,0 +1,14 @@
+<form name="form_sendMessage" method="post">
+    <br>
+    <fieldset>
+        <label id="label_Id">Send to:</label>
+        <select name="dropdown_recipientId">
+            {{#each currentFriendsArray}}
+                <option value= {{ this.UserId }}> {{ this.UserId }} ({{ this.Username}})</option>
+            {{/each}}
+        </select></br>
+        <textarea name="field_messageContents" rows="10" cols="50" placeholder="Enter message here"/></textarea>
+        <br />
+        <input type="submit" value="Send" />
+    </fieldset>
+</form>
